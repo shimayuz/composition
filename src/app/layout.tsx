@@ -1,6 +1,6 @@
 import './globals.css';
 import { Navbar } from '../components/ui/Navbar';
-import { Footer } from '../components/ui/Footer';
+import { Footer } from '../components/layout/Footer';
 import { Inter, Noto_Sans_JP } from 'next/font/google';
 
 // Font configuration for multi-language support

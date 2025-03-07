@@ -26,13 +26,12 @@ export const AboutSection = () => {
         </div>
         
         <div className="lg:col-span-4">
-          <div className="rounded-lg overflow-hidden shadow-lg mt-10 lg:mt-20">
-            <Image 
-              src="/images/services/ai-future.jpg"
-              alt="AI Technology Future"
-              width={600}
-              height={400}
-              className="w-full h-auto"
+          <div className="rounded-lg overflow-hidden shadow-lg mt-10 lg:mt-20 aspect-w-1 aspect-h-1">
+            <img 
+              src="/images/profile-photo.png" 
+              alt="代表ポートレート" 
+              className="w-full h-full object-cover"
+              loading="lazy"
             />
           </div>
         </div>

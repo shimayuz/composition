@@ -7,6 +7,16 @@ export const ServicesSection = () => {
     <Section id="services" background="white">
       <SectionHeader title="医療コンサルティングエキスパイザリー" />
       
+      {/* 16:9アスペクト比の画像エリアを追加 */}
+      <div className="w-full mb-8 aspect-w-16 aspect-h-9 overflow-hidden rounded-lg shadow-lg">
+        <img 
+          src="/images/modern-office-fusion.webp" 
+          alt="モダンオフィスシーン" 
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
+      </div>
+      
       <div className="space-y-6 text-gray-700 mb-8">
         <p>
           Compositionでは、医療分野における豊富な経験と専門知識を活かし、医療機関や製薬企業、ヘルステック企業向けの包括的なコンサルティングサービスを提供しています。AIと医療の両方に精通した専門家チームが、クライアント固有の課題解決と戦略的目標の達成をサポートします。
