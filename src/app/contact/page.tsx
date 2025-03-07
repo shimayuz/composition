@@ -1,7 +1,70 @@
+"use client";
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Section } from '../../components/layout/Section';
 import { SectionHeader } from '../../components/ui/SectionHeader';
 
 export default function Contact() {
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    company: '',
+    subject: '',
+    message: '',
+    privacy: false
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+  
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, checked } = e.target;
+    setFormData(prev => ({ ...prev, [name]: checked }));
+  };
+  
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError('');
+    
+    try {
+      // 必須項目のバリデーション
+      if (!formData.name || !formData.email || !formData.subject || !formData.message || !formData.privacy) {
+        setError('必須項目をすべて入力してください');
+        setIsSubmitting(false);
+        return;
+      }
+      
+      // APIエンドポイントにデータを送信
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'お問い合わせの送信に失敗しました');
+      }
+      
+      // 送信成功時にサンクスページへリダイレクト
+      router.push('/contact/thank-you');
+    } catch (err) {
+      console.error('送信エラー:', err);
+      setError(err instanceof Error ? err.message : 'お問い合わせの送信に失敗しました');
+      setIsSubmitting(false);
+    }
+  };
   return (
     <>
       <div className="bg-[var(--primary-color)] py-20">
@@ -21,7 +84,12 @@ export default function Contact() {
           />
           
           <div className="bg-white rounded-lg shadow-lg p-8">
-            <form className="space-y-6">
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
+                <p>{error}</p>
+              </div>
+            )}
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-gray-700 font-medium mb-2">
@@ -31,6 +99,8 @@ export default function Contact() {
                     type="text"
                     id="name"
                     name="name"
+                    value={formData.name}
+                    onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
                     required
                   />
@@ -44,6 +114,8 @@ export default function Contact() {
                     type="email"
                     id="email"
                     name="email"
+                    value={formData.email}
+                    onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
                     required
                   />
@@ -57,6 +129,8 @@ export default function Contact() {
                     type="tel"
                     id="phone"
                     name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
                   />
                 </div>
@@ -69,6 +143,8 @@ export default function Contact() {
                     type="text"
                     id="company"
                     name="company"
+                    value={formData.company}
+                    onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
                   />
                 </div>
@@ -82,6 +158,8 @@ export default function Contact() {
                   type="text"
                   id="subject"
                   name="subject"
+                  value={formData.subject}
+                  onChange={handleChange}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
                   required
                 />
@@ -94,6 +172,8 @@ export default function Contact() {
                 <textarea
                   id="message"
                   name="message"
+                  value={formData.message}
+                  onChange={handleChange}
                   rows={6}
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
                   required
@@ -106,6 +186,8 @@ export default function Contact() {
                     id="privacy"
                     name="privacy"
                     type="checkbox"
+                    checked={formData.privacy}
+                    onChange={handleCheckboxChange}
                     className="focus:ring-[var(--primary-color)] h-4 w-4 text-[var(--primary-color)] border-gray-300 rounded"
                     required
                   />
@@ -121,8 +203,9 @@ export default function Contact() {
                 <button
                   type="submit"
                   className="btn-primary py-3 px-10 text-lg"
+                  disabled={isSubmitting}
                 >
-                  送信する
+                  {isSubmitting ? '送信中...' : '送信する'}
                 </button>
               </div>
             </form>
@@ -143,9 +226,9 @@ export default function Contact() {
               </div>
               <h3 className="text-xl font-bold mb-2">所在地</h3>
               <p className="text-gray-600">
-                〒100-0001<br />
-                東京都千代田区1-1-1<br />
-                コンポジションビル
+                〒155-0032<br />
+                東京都世田谷区代沢5-19-12 2F<br />
+                合同会社コンポジション
               </p>
             </div>
             
@@ -174,7 +257,7 @@ export default function Contact() {
               <h3 className="text-xl font-bold mb-2">電話番号</h3>
               <p className="text-gray-600">
                 <a href="tel:03-1234-5678" className="text-[var(--primary-color)] hover:underline">
-                  03-1234-5678
+                  090-1695-6422
                 </a>
               </p>
             </div>
