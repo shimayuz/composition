@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import sgMail from '@sendgrid/mail';
 
 export const runtime = 'edge';
 
@@ -16,22 +16,13 @@ export async function POST(request: Request) {
       );
     }
 
-    // メール送信の設定
-    // 注意: 実際の環境では環境変数を使用してください
-    const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-      port: Number(process.env.EMAIL_PORT) || 587,
-      secure: Boolean(process.env.EMAIL_SECURE) || false,
-      auth: {
-        user: process.env.EMAIL_USER || 'your-email@gmail.com',
-        pass: process.env.EMAIL_PASS || 'your-password',
-      },
-    });
+    // SendGrid APIキーを設定
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
     // 管理者向けメール
     const adminMailOptions = {
-      from: `"コンポジションウェブサイト" <${process.env.EMAIL_USER || 'your-email@gmail.com'}>`,
-      to: process.env.ADMIN_EMAIL || 'info@composition2940.com',
+      from: process.env.EMAIL_FROM || 'info@composition2940.com',
+      to: process.env.ADMIN_EMAIL || 'yusukefukushima@composition2940.com',
       subject: `【お問い合わせ】${subject}`,
       text: `
 お名前: ${name}
@@ -78,7 +69,7 @@ ${message}
 
     // 自動返信メール
     const autoReplyMailOptions = {
-      from: `"合同会社コンポジション" <${process.env.EMAIL_USER || 'your-email@gmail.com'}>`,
+      from: process.env.EMAIL_FROM || 'info@composition2940.com',
       to: email,
       subject: '【自動返信】お問い合わせありがとうございます',
       text: `
@@ -133,11 +124,11 @@ Email: info@composition2940.com
       `,
     };
 
-    // メール送信（管理者向け）
-    await transporter.sendMail(adminMailOptions);
-    
-    // メール送信（自動返信）
-    await transporter.sendMail(autoReplyMailOptions);
+    // メール送信（管理者向けと自動返信を並行して送信）
+    await Promise.all([
+      sgMail.send(adminMailOptions),
+      sgMail.send(autoReplyMailOptions)
+    ]);
 
     return NextResponse.json({ success: true });
   } catch (error) {
