@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
-import sgMail from '@sendgrid/mail';
 
-// Node.jsランタイムを使用（SendGridはEdgeランタイムと互換性がないため）
-export const runtime = 'nodejs';
+// Edge Runtimeを使用（Cloudflare Workersとの互換性のため）
+export const runtime = 'edge';
 
 export async function POST(request: Request) {
   try {
@@ -17,15 +16,19 @@ export async function POST(request: Request) {
       );
     }
 
-    // SendGrid APIキーを設定
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
+    // Mailgun API設定
+    const MAILGUN_API_KEY = process.env.MAILGUN_API_KEY || '';
+    const MAILGUN_DOMAIN = process.env.MAILGUN_DOMAIN || '';
+    const MAILGUN_BASE_URL = `https://api.mailgun.net/v3/${MAILGUN_DOMAIN}/messages`;
+    const EMAIL_FROM = process.env.EMAIL_FROM || 'info@composition2940.com';
+    const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'yusukefukushima@composition2940.com';
 
-    // 管理者向けメール
-    const adminMailOptions = {
-      from: process.env.EMAIL_FROM || 'info@composition2940.com',
-      to: process.env.ADMIN_EMAIL || 'yusukefukushima@composition2940.com',
-      subject: `【お問い合わせ】${subject}`,
-      text: `
+    // 管理者向けメールの内容
+    const adminMailFormData = new FormData();
+    adminMailFormData.append('from', `コンポジションウェブサイト <${EMAIL_FROM}>`);
+    adminMailFormData.append('to', ADMIN_EMAIL);
+    adminMailFormData.append('subject', `【お問い合わせ】${subject}`);
+    adminMailFormData.append('text', `
 お名前: ${name}
 メールアドレス: ${email}
 電話番号: ${phone || '未入力'}
@@ -34,8 +37,8 @@ export async function POST(request: Request) {
 
 お問い合わせ内容:
 ${message}
-      `,
-      html: `
+`);
+    adminMailFormData.append('html', `
 <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
   <h2 style="color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px;">ウェブサイトからのお問い合わせ</h2>
   <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
@@ -65,15 +68,14 @@ ${message}
     <p style="white-space: pre-line;">${message}</p>
   </div>
 </div>
-      `,
-    };
+`);
 
-    // 自動返信メール
-    const autoReplyMailOptions = {
-      from: process.env.EMAIL_FROM || 'info@composition2940.com',
-      to: email,
-      subject: '【自動返信】お問い合わせありがとうございます',
-      text: `
+    // 自動返信メールの内容
+    const autoReplyFormData = new FormData();
+    autoReplyFormData.append('from', `合同会社コンポジション <${EMAIL_FROM}>`);
+    autoReplyFormData.append('to', email);
+    autoReplyFormData.append('subject', '【自動返信】お問い合わせありがとうございます');
+    autoReplyFormData.append('text', `
 ${name} 様
 
 お問い合わせいただき、ありがとうございます。
@@ -95,8 +97,8 @@ ${message}
 東京都世田谷区代沢5-19-12 2F
 TEL: 090-1695-6422
 Email: info@composition2940.com
-      `,
-      html: `
+`);
+    autoReplyFormData.append('html', `
 <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
   <h2 style="color: #333;">お問い合わせありがとうございます</h2>
   <p>${name} 様</p>
@@ -122,14 +124,38 @@ Email: info@composition2940.com
     </p>
   </div>
 </div>
-      `,
-    };
+`);
+
+    // Basic認証用のエンコード
+    const authHeader = 'Basic ' + btoa(`api:${MAILGUN_API_KEY}`);
 
     // メール送信（管理者向けと自動返信を並行して送信）
-    await Promise.all([
-      sgMail.send(adminMailOptions),
-      sgMail.send(autoReplyMailOptions)
+    const [adminResponse, autoReplyResponse] = await Promise.all([
+      fetch(MAILGUN_BASE_URL, {
+        method: 'POST',
+        headers: {
+          'Authorization': authHeader
+        },
+        body: adminMailFormData
+      }),
+      fetch(MAILGUN_BASE_URL, {
+        method: 'POST',
+        headers: {
+          'Authorization': authHeader
+        },
+        body: autoReplyFormData
+      })
     ]);
+
+    // レスポンスの確認
+    if (!adminResponse.ok || !autoReplyResponse.ok) {
+      console.error('管理者メール送信エラー:', await adminResponse.text());
+      console.error('自動返信メール送信エラー:', await autoReplyResponse.text());
+      return NextResponse.json(
+        { error: 'メール送信に失敗しました' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
