@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import sgMail from '@sendgrid/mail';
 
-export const runtime = 'edge';
+// Node.jsランタイムを使用（SendGridはEdgeランタイムと互換性がないため）
+export const runtime = 'nodejs';
 
 export async function POST(request: Request) {
   try {
