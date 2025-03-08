@@ -9,10 +9,10 @@ export const Footer = () => {
             <p className="text-sm">© 2025 Composition. All rights reserved.</p>
           </div>
           <div className="flex space-x-6">
-            <Link href="/privacy-policy" className="text-sm hover:underline">
+            <Link href="/privacy-policy" className="text-sm hover:underline" target="_blank" rel="noopener noreferrer">
               プライバシーポリシー
             </Link>
-            <Link href="/specified-commercial-transaction" className="text-sm hover:underline">
+            <Link href="/specified-commercial-transaction" className="text-sm hover:underline" target="_blank" rel="noopener noreferrer">
               特定商取引法に基づく表記
             </Link>
           </div>
