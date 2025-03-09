@@ -1,11 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { handleHashLinkClick } from '../../utils/smoothScroll';
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
@@ -25,22 +28,44 @@ export const Navbar = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
-          <Link href="/" className="text-gray-600 hover:text-[#3a5a40]">
+          <Link 
+            href="/" 
+            className={`${pathname === '/' ? 'text-[#3a5a40] font-medium' : 'text-gray-600'} hover:text-[#3a5a40]`}
+          >
             ホーム
           </Link>
-          <Link href="#about" className="text-gray-600 hover:text-[#3a5a40]">
+          <Link 
+            href={pathname === '/' ? '#about' : '/#about'} 
+            className="text-gray-600 hover:text-[#3a5a40]"
+            onClick={(e) => handleHashLinkClick(e, pathname, 80)}
+          >
             私たちについて
           </Link>
-          <Link href="#services" className="text-gray-600 hover:text-[#3a5a40]">
+          <Link 
+            href={pathname === '/' ? '#services' : '/#services'} 
+            className="text-gray-600 hover:text-[#3a5a40]"
+            onClick={(e) => handleHashLinkClick(e, pathname, 80)}
+          >
             サービス
           </Link>
-          <Link href="#projects" className="text-gray-600 hover:text-[#3a5a40]">
+          <Link 
+            href={pathname === '/' ? '#projects' : '/#projects'} 
+            className="text-gray-600 hover:text-[#3a5a40]"
+            onClick={(e) => handleHashLinkClick(e, pathname, 80)}
+          >
             プロジェクト
           </Link>
-          <Link href="#news" className="text-gray-600 hover:text-[#3a5a40]">
+          <Link 
+            href={pathname === '/' ? '#news' : '/#news'} 
+            className="text-gray-600 hover:text-[#3a5a40]"
+            onClick={(e) => handleHashLinkClick(e, pathname, 80)}
+          >
             ニュース
           </Link>
-          <Link href="/contact" className="btn-primary">
+          <Link 
+            href="/contact" 
+            className={`btn-primary ${pathname.startsWith('/contact') ? 'bg-[#3a5a40] text-white' : ''}`}
+          >
             お問い合わせ
           </Link>
         </div>
@@ -76,42 +101,54 @@ export const Navbar = () => {
           <div className="flex flex-col space-y-4">
             <Link 
               href="/" 
-              className="text-gray-600 hover:text-[#3a5a40] py-2 text-center"
+              className={`${pathname === '/' ? 'text-[#3a5a40] font-medium' : 'text-gray-600'} hover:text-[#3a5a40] py-2 text-center`}
               onClick={() => setIsMenuOpen(false)}
             >
               ホーム
             </Link>
             <Link 
-              href="#about" 
+              href={pathname === '/' ? '#about' : '/#about'} 
               className="text-gray-600 hover:text-[#3a5a40] py-2 text-center"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={(e) => {
+                handleHashLinkClick(e, pathname, 80);
+                setIsMenuOpen(false);
+              }}
             >
               私たちについて
             </Link>
             <Link 
-              href="#services" 
+              href={pathname === '/' ? '#services' : '/#services'} 
               className="text-gray-600 hover:text-[#3a5a40] py-2 text-center"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={(e) => {
+                handleHashLinkClick(e, pathname, 80);
+                setIsMenuOpen(false);
+              }}
             >
               サービス
             </Link>
             <Link 
-              href="#projects" 
+              href={pathname === '/' ? '#projects' : '/#projects'} 
               className="text-gray-600 hover:text-[#3a5a40] py-2 text-center"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={(e) => {
+                handleHashLinkClick(e, pathname, 80);
+                setIsMenuOpen(false);
+              }}
             >
               プロジェクト
             </Link>
             <Link 
-              href="#news" 
+              href={pathname === '/' ? '#news' : '/#news'} 
               className="text-gray-600 hover:text-[#3a5a40] py-2 text-center"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={(e) => {
+                handleHashLinkClick(e, pathname, 80);
+                setIsMenuOpen(false);
+              }}
             >
               ニュース
             </Link>
             <Link 
               href="/contact" 
-              className="btn-primary text-center"
+              className={`btn-primary text-center ${pathname.startsWith('/contact') ? 'bg-[#3a5a40] text-white' : ''}`}
               onClick={() => setIsMenuOpen(false)}
             >
               お問い合わせ
