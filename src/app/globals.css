@@ -9,6 +9,13 @@
   --color-brand: #2563a8;
   --color-brand-soft: #e8f0f7;
   --color-line: #d6dee6;
+
+  /* レガシー互換（旧緑系→新パレットに再マップ） */
+  --primary-color: #2563a8;
+  --secondary-color: #3b7cc4;
+  --accent-color: #2563a8;
+  --dark-bg: #0f2a43;
+  --light-bg: #f7f9fa;
 }
 
 body {
