@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { consultUrl } from '../../lib/siteConfig';
 
@@ -32,14 +31,11 @@ export const Navbar = () => {
   return (
     <nav className="bg-white/95 backdrop-blur border-b border-line sticky top-0 z-50">
       <div className="container-custom flex justify-between items-center py-3.5">
-        <Link href="/" className="flex items-center" aria-label="Composition ホーム">
-          <Image
-            src="/images/logo.png"
-            alt="Composition"
-            width={168}
-            height={28}
-            className="object-contain"
-          />
+        <Link href="/" className="flex items-baseline gap-0.5" aria-label="Composition ホーム">
+          <span className="text-xl font-black tracking-tight text-ink">Composition</span>
+          <span className="text-xl font-black text-brand" aria-hidden>
+            .
+          </span>
         </Link>
 
         {/* Desktop */}

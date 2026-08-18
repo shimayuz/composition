@@ -44,7 +44,7 @@ export function ServiceSplit() {
             <Link
               key={s.href}
               href={s.href}
-              className="group grid md:grid-cols-12 gap-5 md:gap-8 items-center py-9 hover:bg-base transition-colors"
+              className="group grid md:grid-cols-12 gap-5 md:gap-8 items-center py-9 hover:bg-canvas transition-colors"
             >
               <div className="md:col-span-1">
                 <Icon name={s.icon} className="w-11 h-11 text-brand" />

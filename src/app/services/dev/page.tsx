@@ -49,7 +49,7 @@ export default function DevPage() {
         </div>
       </section>
 
-      <section className="section-padding bg-base">
+      <section className="section-padding bg-canvas">
         <div className="container-custom">
           <SectionTitle en="Process" ja="進め方" />
           <div className="mt-12 space-y-0 divide-y divide-line border-y border-line">

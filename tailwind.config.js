@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       colors: {
         // 新デザイントークン（クリニカルホワイト×ディープネイビー×医療ブルー）
-        base: '#f7f9fa',
+        canvas: '#f7f9fa',
         ink: '#0f2a43',
         brand: {
           DEFAULT: '#2563a8',
@@ -31,5 +31,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/aspect-ratio')],
+  plugins: [],
 };

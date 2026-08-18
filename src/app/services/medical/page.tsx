@@ -49,7 +49,7 @@ export default function MedicalPage() {
         </div>
       </section>
 
-      <section className="section-padding bg-base">
+      <section className="section-padding bg-canvas">
         <div className="container-custom">
           <SectionTitle en="What we build" ja="提供内容" />
           <div className="mt-12 divide-y divide-line border-y border-line">

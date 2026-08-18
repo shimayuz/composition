@@ -47,7 +47,7 @@ function NewsRow({
   );
   if (href) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className="block hover:bg-base transition-colors">
+      <a href={href} target="_blank" rel="noopener noreferrer" className="block hover:bg-canvas transition-colors">
         {inner}
       </a>
     );

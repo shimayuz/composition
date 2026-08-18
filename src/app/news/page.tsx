@@ -30,7 +30,7 @@ export default function NewsPage() {
                     href={n.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block hover:bg-base transition-colors"
+                    className="block hover:bg-canvas transition-colors"
                   >
                     {inner}
                   </a>

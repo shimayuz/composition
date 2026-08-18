@@ -50,7 +50,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section-padding bg-base">
+      <section className="section-padding bg-canvas">
         <div className="container-custom">
           <SectionTitle en="Journey" ja="歩み" />
           <div className="mt-12 divide-y divide-line border-y border-line max-w-3xl">

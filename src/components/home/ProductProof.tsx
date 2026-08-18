@@ -4,14 +4,14 @@ import { siteConfig } from '../../lib/siteConfig';
 
 export function ProductProof() {
   return (
-    <section id="product-proof" className="section-padding bg-base">
+    <section id="product-proof" className="section-padding bg-canvas">
       <div className="container-custom">
         <SectionTitle en="Proof of work" ja="作ったものが、証明。" />
         <div className="mt-12 grid lg:grid-cols-12 gap-10 items-start">
           <div className="lg:col-span-7">
             {/* ブラウザフレーム風 */}
             <div className="rounded-lg border border-line bg-white shadow-sm overflow-hidden">
-              <div className="flex items-center gap-2 px-4 py-2.5 border-b border-line bg-base">
+              <div className="flex items-center gap-2 px-4 py-2.5 border-b border-line bg-canvas">
                 <span className="w-2.5 h-2.5 rounded-full bg-line" />
                 <span className="w-2.5 h-2.5 rounded-full bg-line" />
                 <span className="w-2.5 h-2.5 rounded-full bg-line" />

@@ -75,7 +75,7 @@ export default function TrainingPage() {
         </div>
       </section>
 
-      <section className="section-padding bg-base">
+      <section className="section-padding bg-canvas">
         <div className="container-custom">
           <SectionTitle en="Diagnosis" ja="なぜ、活用されないのか" />
           <div className="mt-12 grid md:grid-cols-3 gap-px bg-line border border-line">
