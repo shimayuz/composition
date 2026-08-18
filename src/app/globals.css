@@ -3,71 +3,63 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 255, 255, 255;
-  --background-end-rgb: 250, 250, 250;
-  
-  /* Custom brand colors based on the image */
-  --primary-color: #3a5a40; /* モスグリーン */
-  --secondary-color: #588157;
-  --accent-color: #a3b18a;
-  --dark-bg: #344e41;
-  --light-bg: #f0f4f1;
+  /* デザイントークン（tailwind.config.js と同期） */
+  --color-base: #f7f9fa;
+  --color-ink: #0f2a43;
+  --color-brand: #2563a8;
+  --color-brand-soft: #e8f0f7;
+  --color-line: #d6dee6;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: var(--color-ink);
+  background-color: var(--color-base);
   font-family: var(--font-noto-sans-jp), sans-serif;
+  font-feature-settings: 'palt';
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
+  letter-spacing: 0.01em;
 }
 
-/* Section counter for numbered sections */
-.section-counter {
-  counter-reset: section;
+::selection {
+  background-color: var(--color-brand);
+  color: #fff;
 }
 
-.section-counter > section {
-  counter-increment: section;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
-.section-counter > section > h2::before {
-  content: counter(section);
-  display: inline-block;
-  font-weight: 700;
-  font-size: 1.5rem;
-  margin-right: 0.5rem;
-  color: var(--primary-color);
-}
-
-/* Custom component styles */
 @layer components {
   .container-custom {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply max-w-6xl mx-auto px-5 sm:px-8;
   }
-  
+
   .section-padding {
-    @apply py-12 md:py-16 lg:py-20;
+    @apply py-16 md:py-24 lg:py-28;
   }
-  
+
+  /* レガシーページ互換 */
   .section-title {
     @apply text-2xl md:text-3xl font-bold mb-6;
   }
-  
+
   .btn-primary {
-    @apply bg-[#3a5a40] text-white px-6 py-2 rounded hover:bg-opacity-90 transition-all;
+    @apply bg-brand text-white px-6 py-2 rounded-md hover:bg-ink transition-colors;
   }
 
   .vertical-text {
     writing-mode: vertical-rl;
     text-orientation: upright;
+  }
+
+  /* 検査値/実装ログ風のモノスペース表示（シグネチャ要素） */
+  .data-label {
+    @apply font-mono text-xs tracking-widest uppercase text-brand;
   }
 }

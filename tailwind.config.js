@@ -8,13 +8,26 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          DEFAULT: '#3a5a40',
-          light: '#588157',
-          dark: '#344e41',
+        // 新デザイントークン（クリニカルホワイト×ディープネイビー×医療ブルー）
+        base: '#f7f9fa',
+        ink: '#0f2a43',
+        brand: {
+          DEFAULT: '#2563a8',
+          soft: '#e8f0f7',
         },
-        accent: '#a3b18a',
-        light: '#f0f4f1',
+        line: '#d6dee6',
+        // 旧キーの再マップ（レガシーページ互換。緑系は全廃）
+        primary: {
+          DEFAULT: '#2563a8',
+          light: '#3b7cc4',
+          dark: '#0f2a43',
+        },
+        accent: '#2563a8',
+        light: '#f7f9fa',
+      },
+      fontFamily: {
+        sans: ['var(--font-noto-sans-jp)', 'sans-serif'],
+        mono: ['var(--font-plex-mono)', 'monospace'],
       },
     },
   },
