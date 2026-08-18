@@ -31,6 +31,10 @@ export const metadata: Metadata = {
     siteName: 'Composition',
     locale: 'ja_JP',
     type: 'website',
+    images: [{ url: '/images/renewal/ogp.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
   },
 };
 
