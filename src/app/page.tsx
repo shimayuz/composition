@@ -1,19 +1,21 @@
-import { Hero } from '../components/layout/Hero';
-import { AboutSection } from '../components/features/AboutSection';
-import { ServicesSection } from '../components/features/ServicesSection';
-import { ProjectsSection } from '../components/features/ProjectsSection';
-import { NewsSection } from '../components/features/NewsSection';
+import { Hero } from '../components/home/Hero';
+import { ProductProof } from '../components/home/ProductProof';
+import { NumbersBand } from '../components/home/NumbersBand';
+import { ServiceSplit } from '../components/home/ServiceSplit';
+import { CeoSection } from '../components/home/CeoSection';
+import { HomeNews } from '../components/home/HomeNews';
+import { ClosingCta } from '../components/home/ClosingCta';
 
 export default function Home() {
   return (
     <>
       <Hero />
-      <div className="section-counter">
-        <AboutSection />
-        <ServicesSection />
-        <ProjectsSection />
-      </div>
-      <NewsSection />
+      <ProductProof />
+      <NumbersBand />
+      <ServiceSplit />
+      <CeoSection />
+      <HomeNews />
+      <ClosingCta />
     </>
   );
 }
