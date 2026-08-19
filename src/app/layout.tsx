@@ -1,15 +1,22 @@
 import './globals.css';
 import { Navbar } from '../components/ui/Navbar';
 import { Footer } from '../components/layout/Footer';
-import { Noto_Sans_JP, IBM_Plex_Mono } from 'next/font/google';
+import { Zen_Kaku_Gothic_New, Shippori_Mincho_B1, IBM_Plex_Mono } from 'next/font/google';
 import { siteConfig } from '../lib/siteConfig';
 import type { Metadata } from 'next';
 
-const notoSansJP = Noto_Sans_JP({
+const zenKaku = Zen_Kaku_Gothic_New({
   subsets: ['latin'],
   weight: ['400', '500', '700', '900'],
   display: 'swap',
-  variable: '--font-noto-sans-jp',
+  variable: '--font-noto-sans-jp', // 変数名は互換のため維持（実体はZen Kaku Gothic New）
+});
+
+const shipporiMincho = Shippori_Mincho_B1({
+  subsets: ['latin'],
+  weight: ['400', '700', '800'],
+  display: 'swap',
+  variable: '--font-display',
 });
 
 const plexMono = IBM_Plex_Mono({
@@ -44,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja" className={`${notoSansJP.variable} ${plexMono.variable}`}>
+    <html lang="ja" className={`${zenKaku.variable} ${shipporiMincho.variable} ${plexMono.variable}`}>
       <body className="min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-grow">

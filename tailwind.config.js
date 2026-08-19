@@ -27,6 +27,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['var(--font-noto-sans-jp)', 'sans-serif'],
+        display: ['var(--font-display)', 'serif'],
         mono: ['var(--font-plex-mono)', 'monospace'],
       },
     },

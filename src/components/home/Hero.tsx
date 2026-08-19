@@ -8,7 +8,7 @@ export function Hero() {
       <div className="container-custom grid lg:grid-cols-12 gap-10 items-center py-16 md:py-24">
         <div className="lg:col-span-7">
           <p className="data-label mb-5">Medical-grade AI, for every field</p>
-          <h1 className="text-4xl md:text-6xl font-black leading-[1.15] tracking-tight">
+          <h1 className="text-4xl md:text-6xl font-black leading-[1.25]">
             AIは、
             <br className="md:hidden" />
             実装で語る。
