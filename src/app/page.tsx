@@ -1,6 +1,5 @@
 import { Hero } from '../components/home/Hero';
 import { ProductProof } from '../components/home/ProductProof';
-import { NumbersBand } from '../components/home/NumbersBand';
 import { ServiceSplit } from '../components/home/ServiceSplit';
 import { CeoSection } from '../components/home/CeoSection';
 import { HomeNews } from '../components/home/HomeNews';
@@ -11,7 +10,6 @@ export default function Home() {
     <>
       <Hero />
       <ProductProof />
-      <NumbersBand />
       <ServiceSplit />
       <CeoSection />
       <HomeNews />
