@@ -73,7 +73,7 @@ export default function DevPage() {
 
       <section className="section-padding bg-white">
         <div className="container-custom">
-          <SectionTitle en="Why us" ja="実装で語る、が方針です" />
+          <SectionTitle en="Why us" ja="自社プロダクトで実証済みの開発プロセス" />
           <p className="mt-6 text-ink/70 leading-relaxed max-w-2xl">
             提案書の枚数ではなく、動いているプロダクトが私たちの実績です。
             自社で企画・開発・運用まで手がけた「診療報酬加算ナビ」をはじめ、

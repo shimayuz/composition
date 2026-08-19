@@ -38,7 +38,7 @@ export function ServiceSplit() {
   return (
     <section className="section-padding bg-white">
       <div className="container-custom">
-        <SectionTitle en="Services" ja="作る。動かす。教える。" />
+        <SectionTitle en="Services" ja="提供サービス" />
         <div className="mt-12 divide-y divide-line border-y border-line">
           {services.map((s) => (
             <Link

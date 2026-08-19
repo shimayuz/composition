@@ -8,7 +8,7 @@ export function HomeNews() {
     <section className="section-padding bg-white">
       <div className="container-custom">
         <div className="flex items-end justify-between">
-          <SectionTitle en="News" ja="動き続ける会社" />
+          <SectionTitle en="News" ja="ニュース" />
           <Link href="/news" className="text-sm text-brand font-bold hover:underline shrink-0">
             すべて見る →
           </Link>

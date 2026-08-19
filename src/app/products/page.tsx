@@ -18,11 +18,10 @@ export default function ProductsPage() {
         <div className="container-custom py-16 md:py-24">
           <p className="data-label mb-5">Products</p>
           <h1 className="text-3xl md:text-5xl font-black leading-tight">
-            動いているものが、実績。
+            自社プロダクト
           </h1>
           <p className="mt-6 text-ink/70 leading-relaxed max-w-2xl">
-            私たちは自社プロダクトを企画から実装・運用まで手がけるプロダクトカンパニーです。
-            ここにあるのはデモではなく、現場で日々使われているサービスです。
+            企画から実装・運用まで自社で手がけ、現場で日々使われているサービスをご紹介します。
           </p>
         </div>
       </section>
