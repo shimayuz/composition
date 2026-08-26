@@ -14,7 +14,7 @@ export function Hero() {
             実装で語る。
           </h1>
           <p className="mt-6 text-base md:text-lg text-ink/70 leading-relaxed max-w-xl">
-            コードを1行も書かずに、AIでプロダクトを作り運用してきた現役医師。
+            診療のかたわら、AIエージェントでプロダクトを作り運用してきた現役医師。
             <br />
             その「AI駆動開発」の実践知で、プロダクト開発・AI研修を通じて
             あなたの現場に伴走します。

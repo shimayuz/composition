@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     template: '%s | Composition',
   },
   description:
-    'コードを書かずにAIでプロダクトを開発・運用する現役医師が率いるAIカンパニー。AIプロダクト開発・AI駆動開発・AI研修を提供します。',
+    '現役医師が率いるAIカンパニー。AIエージェントで自社プロダクトを開発・運用する実践知をもとに、AIプロダクト開発・AI駆動開発・AI研修を提供します。',
   openGraph: {
     siteName: 'Composition',
     locale: 'ja_JP',

@@ -8,13 +8,13 @@ import { siteConfig } from '../../lib/siteConfig';
 export const metadata: Metadata = {
   title: '私たちについて',
   description:
-    '合同会社コンポジションは、コードを書かずにAIでプロダクトを開発・運用する現役医師が率いるAIカンパニー。AIプロダクト開発・AI駆動開発・AI研修を提供します。',
+    '合同会社コンポジションは、現役医師が率いるAIカンパニー。AIエージェントで自社プロダクトを開発・運用する実践知をもとに、AIプロダクト開発・AI駆動開発・AI研修を提供します。',
 };
 
 const timeline = [
-  { year: '医師として', body: '臨床現場で20年診療にあたる中で、現場の非効率を技術で解決したいと考えるようになる。ただしコードは書けないまま。' },
-  { year: 'AI駆動開発へ', body: '生成AIの実用化により、コードを書かなくても開発できる時代が到来。AIエージェントを使い、診療報酬加算ナビなど実運用されるサービスを非エンジニアのまま開発。' },
-  { year: 'Compositionとして', body: '「非エンジニアでも、AIとなら開発できる」という自らの実証を軸に、AIプロダクト開発・AI駆動開発・AI研修の3領域で事業を展開。' },
+  { year: '医師として', body: '臨床現場で20年診療にあたる中で、現場の非効率を技術で解決したいと考えるようになる。' },
+  { year: 'AI駆動開発へ', body: '生成AIの実用化を機に、AIエージェントを使った開発を開始。診療報酬加算ナビなど、実運用されるサービスを自社で開発。' },
+  { year: 'Compositionとして', body: 'この開発プロセスの実践知を軸に、AIプロダクト開発・AI駆動開発・AI研修の3領域で事業を展開。' },
 ];
 
 export default function AboutPage() {
@@ -25,14 +25,15 @@ export default function AboutPage() {
           <div className="lg:col-span-7">
             <p className="data-label mb-5">About us</p>
             <h1 className="text-3xl md:text-5xl font-black leading-tight">
-              コードを書かない医師が、
+              医師が、AIで
               <br />
-              AIで開発を始めた。
+              プロダクトを作る会社。
             </h1>
             <p className="mt-6 text-ink/70 leading-relaxed max-w-xl">
-              合同会社コンポジションは、非エンジニアの現役医師が率いるAIカンパニーです。
-              代表はコードを1行も書かずに、AIエージェントを使って自社プロダクトを開発・運用しています。
-              「非エンジニアでも開発できる」を自ら証明してきた経験が、開発と研修の土台です。
+              合同会社コンポジションは、現役医師が率いるAIカンパニーです。
+              代表にエンジニアとしての経歴はありませんが、AIエージェントを使って
+              自社プロダクトを開発・運用しています。この実践の積み重ねが、
+              開発と研修の土台です。
             </p>
           </div>
           <div className="lg:col-span-5">

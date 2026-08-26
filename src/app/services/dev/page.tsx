@@ -75,9 +75,9 @@ export default function DevPage() {
         <div className="container-custom">
           <SectionTitle en="Why us" ja="自社プロダクトで実証済みの開発プロセス" />
           <p className="mt-6 text-ink/70 leading-relaxed max-w-2xl">
-            代表は非エンジニアで、コードは1行も書きません。それでもAIエージェントを使って
-            「診療報酬加算ナビ」を企画から運用まで自社で作り上げました。
-            この「非エンジニアでも開発できるプロセス」そのものが商品です。
+            「診療報酬加算ナビ」は、エンジニア出身ではない代表がAIエージェントを使って
+            企画から運用まで作り上げたサービスです。エンジニアが潤沢にいない組織でも
+            開発を進められる——このプロセスを、貴社の体制に合わせてご提供します。
             作ったものは<Link href="/products" className="text-brand font-bold hover:underline">プロダクト一覧</Link>でご覧いただけます。
           </p>
         </div>
