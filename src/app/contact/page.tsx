@@ -67,14 +67,35 @@ export default function Contact() {
   };
   return (
     <>
-      <div className="bg-[var(--primary-color)] py-20">
+      <div className="bg-ink py-20">
         <div className="container-custom">
-          <h1 className="text-3xl md:text-4xl font-bold text-white text-center">
+          <h1 className="text-3xl md:text-4xl font-black text-white text-center">
             お問い合わせ
           </h1>
         </div>
       </div>
-      
+
+      {process.env.NEXT_PUBLIC_TIMEREX_URL && (
+        <div className="bg-brand-soft border-b border-line">
+          <div className="container-custom py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+              <p className="font-black text-lg">オンライン無料相談を予約する</p>
+              <p className="text-sm text-ink/60 mt-1">
+                売り込みはしません。30分・オンラインで、現場の課題をお聞かせください。
+              </p>
+            </div>
+            <a
+              href={process.env.NEXT_PUBLIC_TIMEREX_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-brand text-white font-bold rounded-md px-7 py-3 hover:bg-ink transition-colors shrink-0"
+            >
+              予約カレンダーを開く ↗
+            </a>
+          </div>
+        </div>
+      )}
+
       <Section id="contact-form" background="light">
         <div className="max-w-3xl mx-auto">
           <SectionHeader 

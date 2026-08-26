@@ -1,157 +1,90 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import { handleHashLinkClick } from '../../utils/smoothScroll';
+import { consultUrl } from '../../lib/siteConfig';
+
+interface NavItem {
+  href: string;
+  label: string;
+}
+
+const navItems: NavItem[] = [
+  { href: '/services/medical', label: '医療AI開発' },
+  { href: '/services/dev', label: 'AI駆動開発' },
+  { href: '/services/training', label: 'AI研修' },
+  { href: '/products', label: 'プロダクト' },
+  { href: '/about', label: '私たちについて' },
+  { href: '/news', label: 'ニュース' },
+];
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
+  const linkClass = (href: string) =>
+    `text-sm transition-colors ${
+      pathname.startsWith(href) ? 'text-brand font-bold' : 'text-ink/70 hover:text-brand'
+    }`;
+
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="container-custom flex justify-between items-center py-4">
-        {/* Logo */}
-        <Link href="/" className="flex items-center">
-          <span className="text-xl font-bold text-gray-800">
-            <Image 
-              src="/images/logo.png" 
-              alt="Composition" 
-              width={180} 
-              height={30}
-              className="object-contain"
-            />
+    <nav className="bg-white/95 backdrop-blur border-b border-line sticky top-0 z-50">
+      <div className="container-custom flex justify-between items-center py-3.5">
+        <Link href="/" className="flex items-baseline gap-0.5" aria-label="Composition ホーム">
+          <span className="text-xl font-black tracking-tight text-ink">Composition</span>
+          <span className="text-xl font-black text-brand" aria-hidden>
+            .
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-8">
-          <Link 
-            href="/" 
-            className={`${pathname === '/' ? 'text-[#3a5a40] font-medium' : 'text-gray-600'} hover:text-[#3a5a40]`}
+        {/* Desktop */}
+        <div className="hidden lg:flex items-center gap-7">
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href} className={linkClass(item.href)}>
+              {item.label}
+            </Link>
+          ))}
+          <Link
+            href={consultUrl()}
+            className="bg-brand text-white text-sm font-bold rounded-md px-5 py-2.5 hover:bg-ink transition-colors"
           >
-            ホーム
-          </Link>
-          <Link 
-            href={pathname === '/' ? '#about' : '/#about'} 
-            className="text-gray-600 hover:text-[#3a5a40]"
-            onClick={(e) => handleHashLinkClick(e, pathname, 80)}
-          >
-            私たちについて
-          </Link>
-          <Link 
-            href={pathname === '/' ? '#services' : '/#services'} 
-            className="text-gray-600 hover:text-[#3a5a40]"
-            onClick={(e) => handleHashLinkClick(e, pathname, 80)}
-          >
-            サービス
-          </Link>
-          <Link 
-            href={pathname === '/' ? '#projects' : '/#projects'} 
-            className="text-gray-600 hover:text-[#3a5a40]"
-            onClick={(e) => handleHashLinkClick(e, pathname, 80)}
-          >
-            プロジェクト
-          </Link>
-          <Link 
-            href={pathname === '/' ? '#news' : '/#news'} 
-            className="text-gray-600 hover:text-[#3a5a40]"
-            onClick={(e) => handleHashLinkClick(e, pathname, 80)}
-          >
-            ニュース
-          </Link>
-          <Link 
-            href="/contact" 
-            className={`btn-primary ${pathname.startsWith('/contact') ? 'bg-[#3a5a40] text-white' : ''}`}
-          >
-            お問い合わせ
+            無料相談
           </Link>
         </div>
 
-        {/* Mobile menu button */}
-        <div className="md:hidden flex items-center">
-          <button
-            className="outline-none"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <svg
-              className="w-6 h-6 text-gray-500"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              {isMenuOpen ? (
-                <path d="M6 18L18 6M6 6l12 12"></path>
-              ) : (
-                <path d="M4 6h16M4 12h16M4 18h16"></path>
-              )}
-            </svg>
-          </button>
-        </div>
+        {/* Mobile toggle */}
+        <button
+          className="lg:hidden p-1 text-ink"
+          aria-label={isMenuOpen ? 'メニューを閉じる' : 'メニューを開く'}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <svg className="w-6 h-6" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+            {isMenuOpen ? <path d="M6 18L18 6M6 6l12 12" /> : <path d="M4 6h16M4 12h16M4 18h16" />}
+          </svg>
+        </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white pb-4 px-4">
-          <div className="flex flex-col space-y-4">
-            <Link 
-              href="/" 
-              className={`${pathname === '/' ? 'text-[#3a5a40] font-medium' : 'text-gray-600'} hover:text-[#3a5a40] py-2 text-center`}
+        <div className="lg:hidden bg-white border-t border-line px-5 pb-6">
+          <div className="flex flex-col">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`py-3 border-b border-line/60 ${linkClass(item.href)}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <Link
+              href={consultUrl()}
+              className="mt-4 bg-brand text-white text-center text-sm font-bold rounded-md px-5 py-3 hover:bg-ink transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
-              ホーム
-            </Link>
-            <Link 
-              href={pathname === '/' ? '#about' : '/#about'} 
-              className="text-gray-600 hover:text-[#3a5a40] py-2 text-center"
-              onClick={(e) => {
-                handleHashLinkClick(e, pathname, 80);
-                setIsMenuOpen(false);
-              }}
-            >
-              私たちについて
-            </Link>
-            <Link 
-              href={pathname === '/' ? '#services' : '/#services'} 
-              className="text-gray-600 hover:text-[#3a5a40] py-2 text-center"
-              onClick={(e) => {
-                handleHashLinkClick(e, pathname, 80);
-                setIsMenuOpen(false);
-              }}
-            >
-              サービス
-            </Link>
-            <Link 
-              href={pathname === '/' ? '#projects' : '/#projects'} 
-              className="text-gray-600 hover:text-[#3a5a40] py-2 text-center"
-              onClick={(e) => {
-                handleHashLinkClick(e, pathname, 80);
-                setIsMenuOpen(false);
-              }}
-            >
-              プロジェクト
-            </Link>
-            <Link 
-              href={pathname === '/' ? '#news' : '/#news'} 
-              className="text-gray-600 hover:text-[#3a5a40] py-2 text-center"
-              onClick={(e) => {
-                handleHashLinkClick(e, pathname, 80);
-                setIsMenuOpen(false);
-              }}
-            >
-              ニュース
-            </Link>
-            <Link 
-              href="/contact" 
-              className={`btn-primary text-center ${pathname.startsWith('/contact') ? 'bg-[#3a5a40] text-white' : ''}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              お問い合わせ
+              無料相談
             </Link>
           </div>
         </div>
