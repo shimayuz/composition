@@ -9,7 +9,7 @@ import { siteConfig } from '../../../lib/siteConfig';
 export const metadata: Metadata = {
   title: '医療AI開発',
   description:
-    '診療報酬・院内業務・ガバナンスを理解した現役医師×開発者が、医療機関で本当に使われるAIを開発します。',
+    '診療報酬・院内業務・ガバナンスを理解した現役医師のチームが、医療機関で本当に使われるAIを開発します。',
 };
 
 const offerings = [
@@ -43,7 +43,7 @@ export default function MedicalPage() {
           </h1>
           <p className="mt-6 text-ink/70 leading-relaxed max-w-2xl">
             診療報酬という制度の制約。多職種が関わる院内業務の複雑さ。そして患者情報のガバナンス。
-            医療のAI導入には三重の制約があります。私たちは臨床経験のある医師が自ら実装するチームとして、
+            医療のAI導入には三重の制約があります。私たちは臨床経験のある医師がAI駆動開発で自らプロダクトを作るチームとして、
             この制約を理解した上で「現場で本当に使われるAI」を作ります。
           </p>
         </div>

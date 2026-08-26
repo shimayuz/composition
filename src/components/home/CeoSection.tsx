@@ -18,11 +18,12 @@ export function CeoSection() {
           </div>
         </div>
         <div className="lg:col-span-8">
-          <SectionTitle en="Founder" ja="現役医師で、CEOで、エンジニア。" />
+          <SectionTitle en="Founder" ja="現役医師で、CEOで、非エンジニア。" />
           <p className="mt-6 text-ink/70 leading-relaxed max-w-2xl">
-            臨床の現場に立ちながら、自分の手でコードを書き、AIプロダクトを作って運用してきました。
-            「医療」という最も失敗が許されない現場で鍛えた実装力が、私たちの提供価値の土台です。
-            戦略資料ではなく、動くものでお見せします。
+            代表はコードを1行も書きません。AIエージェントに開発させる「AI駆動開発」で、
+            診療報酬加算ナビなどのプロダクトを作り、運用してきました。
+            非エンジニアでもここまで作れる——自分の事業でそれを証明してきたことが、
+            開発と研修の提供価値の土台です。
           </p>
           <Link
             href="/about"

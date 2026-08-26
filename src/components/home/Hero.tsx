@@ -14,9 +14,9 @@ export function Hero() {
             実装で語る。
           </h1>
           <p className="mt-6 text-base md:text-lg text-ink/70 leading-relaxed max-w-xl">
-            医療の現場で自らAIを作り、動かしてきた現役医師×開発者。
+            コードを1行も書かずに、AIでプロダクトを作り運用してきた現役医師。
             <br />
-            その実装力で、AIプロダクト開発・AI駆動開発・AI研修を通じて
+            その「AI駆動開発」の実践知で、プロダクト開発・AI研修を通じて
             あなたの現場に伴走します。
           </p>
           <div className="mt-9 flex flex-col sm:flex-row gap-4">
@@ -31,7 +31,7 @@ export function Hero() {
           <div className="relative aspect-square max-w-md mx-auto lg:ml-auto overflow-hidden rounded-lg">
             <Image
               src="/images/renewal/ceo-workscene.webp"
-              alt="診察室でコードを書く代表"
+              alt="診察室でAI開発を行う代表"
               fill
               sizes="(max-width: 1024px) 90vw, 40vw"
               className="object-cover"
