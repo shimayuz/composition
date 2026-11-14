@@ -1,20 +1,38 @@
 import { NextResponse } from 'next/server';
+import { escapeHtml, isSameOriginRequest, validateContactInput } from '../../../lib/contactValidation';
 
 // Edge Runtimeを使用（Cloudflare Workersとの互換性のため）
 export const runtime = 'edge';
 
 export async function POST(request: Request) {
   try {
-    const formData = await request.json();
-    const { name, email, phone, company, subject, message } = formData;
-
-    // バリデーション
-    if (!name || !email || !subject || !message) {
+    // 自サイトのフォーム以外（他サイトのページなど）からの送信を拒否する
+    if (!isSameOriginRequest(request.headers.get('origin'), request.headers.get('host'))) {
       return NextResponse.json(
-        { error: '必須項目が入力されていません' },
+        { error: '不正なリクエストです' },
+        { status: 403 }
+      );
+    }
+
+    // バリデーション（宛先は1件のみ・長さの上限・改行の除去）
+    const validation = validateContactInput(await request.json().catch(() => null));
+    if (!validation.ok) {
+      return NextResponse.json(
+        { error: validation.error },
         { status: 400 }
       );
     }
+    const { name, email, phone, company, subject, message } = validation.value;
+
+    // HTMLメールに埋め込む値はエスケープする
+    const html = {
+      name: escapeHtml(name),
+      email: escapeHtml(email),
+      phone: escapeHtml(phone || '未入力'),
+      company: escapeHtml(company || '未入力'),
+      subject: escapeHtml(subject),
+      message: escapeHtml(message),
+    };
 
     // Mailgun API設定
     const MAILGUN_API_KEY = process.env.MAILGUN_API_KEY || '';
@@ -44,46 +62,41 @@ ${message}
   <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
     <tr>
       <th style="text-align: left; padding: 8px; border-bottom: 1px solid #eee;">お名前</th>
-      <td style="padding: 8px; border-bottom: 1px solid #eee;">${name}</td>
+      <td style="padding: 8px; border-bottom: 1px solid #eee;">${html.name}</td>
     </tr>
     <tr>
       <th style="text-align: left; padding: 8px; border-bottom: 1px solid #eee;">メールアドレス</th>
-      <td style="padding: 8px; border-bottom: 1px solid #eee;">${email}</td>
+      <td style="padding: 8px; border-bottom: 1px solid #eee;">${html.email}</td>
     </tr>
     <tr>
       <th style="text-align: left; padding: 8px; border-bottom: 1px solid #eee;">電話番号</th>
-      <td style="padding: 8px; border-bottom: 1px solid #eee;">${phone || '未入力'}</td>
+      <td style="padding: 8px; border-bottom: 1px solid #eee;">${html.phone}</td>
     </tr>
     <tr>
       <th style="text-align: left; padding: 8px; border-bottom: 1px solid #eee;">会社名</th>
-      <td style="padding: 8px; border-bottom: 1px solid #eee;">${company || '未入力'}</td>
+      <td style="padding: 8px; border-bottom: 1px solid #eee;">${html.company}</td>
     </tr>
     <tr>
       <th style="text-align: left; padding: 8px; border-bottom: 1px solid #eee;">件名</th>
-      <td style="padding: 8px; border-bottom: 1px solid #eee;">${subject}</td>
+      <td style="padding: 8px; border-bottom: 1px solid #eee;">${html.subject}</td>
     </tr>
   </table>
   <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px;">
     <h3 style="margin-top: 0; color: #333;">お問い合わせ内容</h3>
-    <p style="white-space: pre-line;">${message}</p>
+    <p style="white-space: pre-line;">${html.message}</p>
   </div>
 </div>
 `);
 
     // 自動返信メールの内容
+    // 入力された名前・件名・本文は載せない（第三者宛てに任意の文面を送る手段にさせないため）
     const autoReplyFormData = new FormData();
     autoReplyFormData.append('from', `合同会社コンポジション <${EMAIL_FROM}>`);
     autoReplyFormData.append('to', email);
     autoReplyFormData.append('subject', '【自動返信】お問い合わせありがとうございます');
     autoReplyFormData.append('text', `
-${name} 様
-
 お問い合わせいただき、ありがとうございます。
-以下の内容でお問い合わせを受け付けました。
-
-件名: ${subject}
-お問い合わせ内容:
-${message}
+お問い合わせを受け付けました。
 
 内容を確認次第、担当者より折り返しご連絡いたします。
 通常、2営業日以内にご返信いたしますので、今しばらくお待ちください。
@@ -101,14 +114,7 @@ Email: info@composition2940.com
     autoReplyFormData.append('html', `
 <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
   <h2 style="color: #333;">お問い合わせありがとうございます</h2>
-  <p>${name} 様</p>
-  <p>お問い合わせいただき、ありがとうございます。<br>以下の内容でお問い合わせを受け付けました。</p>
-  
-  <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
-    <p><strong>件名:</strong> ${subject}</p>
-    <p><strong>お問い合わせ内容:</strong></p>
-    <p style="white-space: pre-line;">${message}</p>
-  </div>
+  <p>お問い合わせいただき、ありがとうございます。<br>お問い合わせを受け付けました。</p>
   
   <p>内容を確認次第、担当者より折り返しご連絡いたします。<br>通常、2営業日以内にご返信いたしますので、今しばらくお待ちください。</p>
   
