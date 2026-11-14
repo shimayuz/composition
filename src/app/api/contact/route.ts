@@ -1,5 +1,12 @@
 import { NextResponse } from 'next/server';
 import { escapeHtml, isSameOriginRequest, validateContactInput } from '../../../lib/contactValidation';
+import { IP_RULE, RECIPIENT_RULE, asRateLimitStore, consumeRateLimit } from '../../../lib/rateLimit';
+
+const tooManyRequests = (retryAfterSeconds: number) =>
+  NextResponse.json(
+    { error: '送信回数が上限に達しました。しばらく時間をおいてからお試しください' },
+    { status: 429, headers: { 'Retry-After': String(retryAfterSeconds) } }
+  );
 
 // Edge Runtimeを使用（Cloudflare Workersとの互換性のため）
 export const runtime = 'edge';
@@ -14,6 +21,21 @@ export async function POST(request: Request) {
       );
     }
 
+    // 回数制限（Cloudflare KV）。束縛が無い環境では制限なしで動かし、ログに残す
+    const rateLimitStore = asRateLimitStore((process.env as Record<string, unknown>).CONTACT_RATE_LIMIT);
+    if (!rateLimitStore) {
+      console.error('CONTACT_RATE_LIMIT のKV束縛が見つかりません。回数制限なしで処理します');
+    }
+
+    // 同じIPからの送信回数を制限する（検証に失敗する送信も数える）
+    if (rateLimitStore) {
+      const clientIp = request.headers.get('cf-connecting-ip') || 'unknown';
+      const ipLimit = await consumeRateLimit(rateLimitStore, IP_RULE, clientIp);
+      if (!ipLimit.allowed) {
+        return tooManyRequests(ipLimit.retryAfterSeconds);
+      }
+    }
+
     // バリデーション（宛先は1件のみ・長さの上限・改行の除去）
     const validation = validateContactInput(await request.json().catch(() => null));
     if (!validation.ok) {
@@ -23,6 +45,14 @@ export async function POST(request: Request) {
       );
     }
     const { name, email, phone, company, subject, message } = validation.value;
+
+    // 同じ宛先への自動返信の回数を制限する（送信元のIPを変えた連続送信への対策）
+    if (rateLimitStore) {
+      const recipientLimit = await consumeRateLimit(rateLimitStore, RECIPIENT_RULE, email);
+      if (!recipientLimit.allowed) {
+        return tooManyRequests(recipientLimit.retryAfterSeconds);
+      }
+    }
 
     // HTMLメールに埋め込む値はエスケープする
     const html = {
