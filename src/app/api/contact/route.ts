@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { escapeHtml, isSameOriginRequest, validateContactInput } from '../../../lib/contactValidation';
-import { IP_RULE, RECIPIENT_RULE, asRateLimitStore, consumeRateLimit } from '../../../lib/rateLimit';
+import { IP_RULE, RECIPIENT_RULE, asRateLimitDatabase, consumeRateLimit } from '../../../lib/rateLimit';
 
 const tooManyRequests = (retryAfterSeconds: number) =>
   NextResponse.json(
@@ -21,10 +21,10 @@ export async function POST(request: Request) {
       );
     }
 
-    // 回数制限（Cloudflare KV）。束縛が無い環境では制限なしで動かし、ログに残す
-    const rateLimitStore = asRateLimitStore((process.env as Record<string, unknown>).CONTACT_RATE_LIMIT);
+    // 回数制限（Cloudflare D1）。束縛が無い環境では制限なしで動かし、ログに残す
+    const rateLimitStore = asRateLimitDatabase((process.env as Record<string, unknown>).CONTACT_DB);
     if (!rateLimitStore) {
-      console.error('CONTACT_RATE_LIMIT のKV束縛が見つかりません。回数制限なしで処理します');
+      console.error('CONTACT_DB のD1束縛が見つかりません。回数制限なしで処理します');
     }
 
     // 同じIPからの送信回数を制限する（検証に失敗する送信も数える）

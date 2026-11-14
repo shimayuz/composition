@@ -3,7 +3,8 @@ compatibility_date = "2025-03-07"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
 
-# お問い合わせAPIの回数制限用カウンター（src/lib/rateLimit.ts）
-[[kv_namespaces]]
-binding = "CONTACT_RATE_LIMIT"
-id = "bec9720466e546c4b7968f1f16944e4c"
+# お問い合わせAPIの回数制限用カウンター（src/lib/rateLimit.ts、スキーマは migrations/）
+[[d1_databases]]
+binding = "CONTACT_DB"
+database_name = "composition-contact"
+database_id = "3ba20991-4fb0-43f8-9f3f-e80a9c7f1d5a"
